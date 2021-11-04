@@ -24,7 +24,7 @@ Here is a Ga<sub>2</sub>O<sub>3</sub> unit cell:
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/beta-Ga2O3.cif;set antialiasDisplay ON;set axes unitcell;set EchoCallback "Locate";bind "LEFT+drag" "+:show rotation";show rotation');
+      Jmol.script(myJmol, 'load ./Model/beta-Ga2O3.cif;set antialiasDisplay ON;set axes unitcell;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
     });
   function locate(a,b){
     var str = b;
