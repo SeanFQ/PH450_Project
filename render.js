@@ -23,10 +23,23 @@ function init() {
   
     // cube defined
     const geometry = new THREE.BoxGeometry();
-    const texture = new THREE.TextureLoader().load("Austenite 20 keV.png");
+    const texture = new THREE.TextureLoader().load("123.png");
     const material = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide});
     cube = new THREE.Mesh(geometry, material);
   
     // generates cube
     scene.add(cube);
 }
+
+function animate() {
+    // controls animation of cube
+    requestAnimationFrame(animate);
+    quaternion.set(q1,q2,q3,q4);
+    quaternion.normalize();
+    // camera rotation set by quaternion values
+    camera.rotation.setFromQuaternion(quaternion);
+    renderer.render(scene, camera);
+  }
+
+init();
+animate();
