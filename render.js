@@ -23,9 +23,16 @@ function init() {
   
     // cube defined
     const geometry = new THREE.BoxGeometry();
-    const texture = new THREE.TextureLoader().load("123.png");
-    const material = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide});
-    cube = new THREE.Mesh(geometry, material);
+    const loader = new THREE.TextureLoader();
+    const materials = [
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/1.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/2.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/3.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/4.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/5.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load('./Model/6.png'), side: THREE.DoubleSide}),
+    ];
+    cube = new THREE.Mesh(geometry, materials);
   
     // generates cube
     scene.add(cube);
