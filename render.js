@@ -12,13 +12,13 @@ var q4 = 1;
 function init() {
     // sets scene and camera angle
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 60, 400 / 300, 0.0001, 10 );
+    camera = new THREE.PerspectiveCamera( 90, 400 / 400, 0.0001, 10 );
     const axesHelper = new THREE.AxesHelper( 5 );
     scene.add(axesHelper);
   
     // begins rendering process, edges smoothed
     renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(400, 300);
+    renderer.setSize(400, 400);
     kikuchi.appendChild(renderer.domElement);
   
     // cube defined
@@ -36,6 +36,26 @@ function init() {
   
     // generates cube
     scene.add(cube);
+
+    // defines cylinder geometry, cyl_height defined through Bragg's Law
+    var cyl_height = 0.02262;
+    var cylGeometry = new THREE.CylinderGeometry(0.48, 0.48, cyl_height, 30, 30, true);
+    var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+    
+    // cylinders defined, these are used to highlight Kikuchi band patterns
+    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder2 = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder2.rotation.z = Math.PI/2;
+    cylinder3 = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder3.rotation.x = Math.PI/2;
+    
+    // generates cylinders
+    scene.add(cylinder);
+    //scene.add(cylinder2);
+    //scene.add(cylinder3);
+
+    // z-axis position of camera, centre of cube at position 0
+    camera.position.z = 0;
 }
 
 function animate() {
