@@ -40,19 +40,49 @@ function init() {
     // defines cylinder geometry, cyl_height defined through Bragg's Law
     var cyl_height = 0.02262;
     var cylGeometry = new THREE.CylinderGeometry(0.48, 0.48, cyl_height, 30, 30, true);
-    var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+    var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+    var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+    var cylMaterial101 = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     
     // cylinders defined, these are used to highlight Kikuchi band patterns
-    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder2 = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder2.rotation.z = Math.PI/2;
-    cylinder3 = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder3.rotation.x = Math.PI/2;
     
+    //cylinders for 100 plane
+    cylinder1001 = new THREE.Mesh(cylGeometry, cylMaterial100);
+    cylinder1002 = new THREE.Mesh(cylGeometry, cylMaterial100);
+    cylinder1002.rotation.z = Math.PI/3;
+    cylinder1003 = new THREE.Mesh(cylGeometry, cylMaterial100);
+    cylinder1003.rotation.z = Math.PI-(Math.PI/3);
+
+    //cylinders for 110 plane
+    cylinder1101 = new THREE.Mesh(cylGeometry, cylMaterial110);
+    cylinder1101.rotation.z = Math.PI/2;
+    cylinder1102 = new THREE.Mesh(cylGeometry, cylMaterial110);
+    cylinder1102.rotation.z = Math.PI/6;
+    cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
+    cylinder1103.rotation.z = Math.PI-(Math.PI/6);
+
+    //clylinders for 101 plane
+    cylinder1011 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1011.rotation.y = Math.PI/6;
+    cylinder1011.rotation.z = Math.PI-(Math.PI/3);
+    cylinder1011.rotation.x = Math.PI/2;
+    cylinder1012 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1012.rotation.y = Math.PI/6;
+    cylinder1012.rotation.z = Math.PI/3;
+    cylinder1012.rotation.x = Math.PI/2;
+    cylinder1013 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1013.rotation.y = Math.PI-(Math.PI/6);
+    cylinder1013.rotation.z = Math.PI/3;
+    cylinder1013.rotation.x = Math.PI/2;
+    cylinder1014 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1014.rotation.y = Math.PI-(Math.PI/6);
+    cylinder1014.rotation.z = Math.PI-(Math.PI/3);
+    cylinder1014.rotation.x = Math.PI/2;
+
     // generates cylinders
-    scene.add(cylinder);
-    //scene.add(cylinder2);
-    //scene.add(cylinder3);
+    //scene.add(cylinder1001,cylinder1002,cylinder1003);
+    //scene.add(cylinder1101,cylinder1102,cylinder1103);
+    scene.add(cylinder1011,cylinder1012,cylinder1013,cylinder1014);
 
     // z-axis position of camera, centre of cube at position 0
     camera.position.z = 0;
