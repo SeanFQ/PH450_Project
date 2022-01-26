@@ -107,13 +107,10 @@
   Jmol.jmolButton(myJmol, "rotate y 90","rotate by 90°");
  </script>
 
-<button class="button button1" onclick=band100()>[100] Plane</button>
-<button class="button button2" onclick=band110()>[110] Plane</button>
-<button class="button button3" onclick=band101()>[101] Plane </button>
  --->
 
 <script type="text/javascript">
-  Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set EchoCallback "addband100"', "isosurface p1 delete;set EchoCallback 'removeband100'", " 100-plane");
+  Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;EchoCallback "addband100"', "isosurface p1 delete;EchoCallback 'removeband100'", " 100-plane");
   Jmol.jmolCheckbox(myJmol, "isosurface p2 hkl {1 1 0} boundbox;color isosurface green translucent;set EchoCallback 'addband110'", "isosurface p2 delete;set EchoCallback 'removeband110'", " 110-plane");
   Jmol.jmolCheckbox(myJmol, "isosurface p3 hkl {1 0 1} boundbox;color isosurface blue translucent;set EchoCallback 'addband101'", "isosurface p3 delete;set EchoCallback 'removeband101'", " 101-plane");
  </script>
