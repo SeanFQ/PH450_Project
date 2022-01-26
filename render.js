@@ -78,14 +78,54 @@ function init() {
     cylinder1014.rotation.y = Math.PI-(Math.PI/6);
     cylinder1014.rotation.z = Math.PI-(Math.PI/3);
     cylinder1014.rotation.x = Math.PI/2;
+    cylinder1015 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1015.rotation.z = Math.PI/3;
+    cylinder1015.rotation.y = Math.PI/2;
+    cylinder1015.rotation.x = Math.PI/2;
+    cylinder1016 = new THREE.Mesh(cylGeometry, cylMaterial101);
+    cylinder1016.rotation.z = Math.PI-(Math.PI/3);
+    cylinder1016.rotation.y = Math.PI/2;
+    cylinder1016.rotation.x = Math.PI/2;
+
+    
 
     // generates cylinders
     //scene.add(cylinder1001,cylinder1002,cylinder1003);
     //scene.add(cylinder1101,cylinder1102,cylinder1103);
-    scene.add(cylinder1011,cylinder1012,cylinder1013,cylinder1014);
-
+    //scene.add(cylinder1011,cylinder1012,cylinder1013,cylinder1014,cylinder1015,cylinder1016);
+    
     // z-axis position of camera, centre of cube at position 0
     camera.position.z = 0;
+}
+
+function addband100() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.add(cylinder1001,cylinder1002,cylinder1003);
+}
+
+function addband110() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.add(cylinder1101,cylinder1102,cylinder1103);
+}
+
+function addband101() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.add(cylinder1011,cylinder1012,cylinder1013,cylinder1014,cylinder1015,cylinder1016);
+}
+
+function removeband100() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.remove(cylinder1001,cylinder1002,cylinder1003);
+}
+
+function removeband110() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.remove(cylinder1101,cylinder1102,cylinder1103);
+}
+
+function removeband101() {
+  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  scene.remove(cylinder1011,cylinder1012,cylinder1013,cylinder1014,cylinder1015,cylinder1016);
 }
 
 function animate() {
