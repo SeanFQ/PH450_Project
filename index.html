@@ -7,54 +7,6 @@
   <style type="text/css">#JmolDiv { width:100%; height:1000px; position:relative; z-index:1000}</style>
   <style type="text/css">#ThreeDiv { width:100%;}</style>
   <script src="./resources/jmol/jsmol/JSmol.min.js" type="text/javascript"></script>
-  <style>
-    .button {
-      border: none;
-      color: white;
-      padding: 16px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      transition-duration: 0.4s;
-      cursor: pointer;
-    }
-    
-    .button1 {
-      background-color: white; 
-      color: black; 
-      border: 2px solid #FF0000;
-    }
-    
-    .button1:hover {
-      background-color: #FF0000;
-      color: white;
-    }
-    
-    .button2 {
-      background-color: white; 
-      color: black; 
-      border: 2px solid #00c400;
-    }
-    
-    .button2:hover {
-      background-color: #00c400;
-      color: white;
-    }
-
-    .button3 {
-      background-color: white; 
-      color: black; 
-      border: 2px solid #00d6c1;
-    }
-    
-    .button3:hover {
-      background-color: #00d6c1;
-      color: white;
-    }
-    
-    </style>
 
 </head>
 
@@ -110,9 +62,9 @@
  --->
 
 <script type="text/javascript">
-  Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;EchoCallback "addband100"', "isosurface p1 delete;EchoCallback 'removeband100'", " 100-plane");
-  Jmol.jmolCheckbox(myJmol, "isosurface p2 hkl {1 1 0} boundbox;color isosurface green translucent;set EchoCallback 'addband110'", "isosurface p2 delete;set EchoCallback 'removeband110'", " 110-plane");
-  Jmol.jmolCheckbox(myJmol, "isosurface p3 hkl {1 0 1} boundbox;color isosurface blue translucent;set EchoCallback 'addband101'", "isosurface p3 delete;set EchoCallback 'removeband101'", " 101-plane");
+  Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set MessageCallback "addband100"', "isosurface p1 delete;set MessageCallback 'removeband100'", " 100-plane");
+  Jmol.jmolCheckbox(myJmol, "isosurface p2 hkl {1 1 0} boundbox;color isosurface green translucent;set MessageCallback 'addband110'", "isosurface p2 delete;set MessageCallback 'removeband110'", " 110-plane");
+  Jmol.jmolCheckbox(myJmol, "isosurface p3 hkl {1 0 1} boundbox;color isosurface blue translucent;set MessageCallback 'addband101'", "isosurface p3 delete;set MessageCallback 'removeband101'", " 101-plane");
  </script>
 
 <script src="./resources/three.js/build/three.min.js"></script>
