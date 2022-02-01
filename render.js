@@ -52,7 +52,7 @@ function bandWidth(h,k,l) {
   console.log(d)
   let BraggAngle = Math.asin((n*lamda)/(2*(d)));
   console.log((BraggAngle*180/Math.PI))
-  let width = 2*radius*Math.sin(BraggAngle/2);
+  let width = 2*radius*Math.tan(BraggAngle);
   console.log(width)
   return width;
   
@@ -68,24 +68,26 @@ function Bands() {
     
     // cylinders defined, these are used to highlight Kikuchi band patterns
 
+    
     //cylinders for 100 plane
     width = bandWidth(1,0,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1001 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1001.rotation.z = Math.PI/2;
     cylinder1002 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1002.rotation.z = Math.PI/6;
+    cylinder1002.rotation.z = Math.PI/3;
     cylinder1003 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1003.rotation.z = Math.PI-(Math.PI/6);
+    cylinder1003.rotation.z = Math.PI-(Math.PI/3);
 
     //cylinders for 110 plane
     width = bandWidth(1,1,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1101 = new THREE.Mesh(cylGeometry, cylMaterial110);
+    cylinder1101.rotation.z = Math.PI/2;
     cylinder1102 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1102.rotation.z = Math.PI/3;
+    cylinder1102.rotation.z = Math.PI/6;
     cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1103.rotation.z = Math.PI-(Math.PI/3);
+    cylinder1103.rotation.z = Math.PI-(Math.PI/6);
+
 
     //clylinders for 101 plane
     width = bandWidth(1,0,1);
