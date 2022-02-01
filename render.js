@@ -40,6 +40,7 @@ function init() {
   
 }
 
+//calculates the width of the kikuchi band through Bragg's Law
 function bandWidth(h,k,l) {
   const radius = 0.48;
   const a = 3.18e-10;
@@ -59,7 +60,7 @@ function bandWidth(h,k,l) {
 
 function Bands() {
 
-    // defines cylinder geometry, cyl_height defined through Bragg's Law
+    // defines cylinder Material and radius
     const radius = 0.48;
     var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
