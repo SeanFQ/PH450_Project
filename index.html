@@ -23,7 +23,7 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif {1,1,1};set antialiasDisplay ON;set axes unitcell;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
+      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set axes unitcell;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
     });
   function locate(a,b){
     var str = b;
@@ -50,16 +50,15 @@
   </tr>
 </table>
 
-<!---
+
 <script type="text/javascript">
-  Jmol.jmolButton(myJmol, "reset", "Reset to original orientation");
+  Jmol.jmolButton(myJmol, "reset;set EchoCallback 'locate'", "Reset to original orientation");
  </script>
 
 <script type="text/javascript">
-  Jmol.jmolButton(myJmol, "rotate y 90","rotate by 90°");
+  Jmol.jmolButton(myJmol, "rotate y 90;set MessageCallback 'locate'","rotate by 90°");
  </script>
 
- --->
 
 <script type="text/javascript">
   Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set MessageCallback "addband100"', "isosurface p1 delete;set MessageCallback 'removeband100'", " 100-plane");

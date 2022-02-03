@@ -8,6 +8,14 @@ var q1 = 0;
 var q2 = 0;
 var q3 = 0;
 var q4 = 1;
+const x = new THREE.Vector3( 1, 0, 0 );
+const y = new THREE.Vector3( 0, 1, 0 );
+const z = new THREE.Vector3( 0, 0, 1 );
+const radius = 0.48;
+const a = 3.18e-10;
+const c = 5.166e-10;
+
+
 
 function init() {
     // sets scene and camera angle
@@ -42,59 +50,85 @@ function init() {
 
 //calculates the width of the kikuchi band through Bragg's Law
 function bandWidth(h,k,l) {
-  const radius = 0.48;
-  const a = 3.18e-10;
-  const c = 5.166e-10;
   const n = 1;
   const beamV = 20;
   const lamda = 8.5885e-12;
   let d = a/(Math.sqrt(4/3*((h**2) + h*k + (k**2))+((a**2)/(c**2))*(l**2)))
-  console.log(d)
   let BraggAngle = Math.asin((n*lamda)/(2*(d)));
-  console.log((BraggAngle*180/Math.PI))
   let width = 2*radius*Math.tan(BraggAngle);
-  console.log(width)
   return width;
   
+}
+
+//function planenormal(h,k,l) {
+//  return [h,k,-h-k,(3*(a**2))/(2*(c**2))*l]
+//}
+
+function N2Cangle(h,k,l) {
+  // calculates the angle between the normal of the plane and the c-axis
+  let W = (3*(a**2))/(2*(c**2))*l;
+  let angle = Math.acos(((c**2)*W)/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))));
+  console.log(angle)
+  return angle;
+}
+
+function N2Aangle(h,k,l) {
+  let W = (3*(a**2))/(2*(c**2))*l;
+  let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))))
+  console.log(angle)
+  return angle;
+}
+
+function Band101(h,k,l) {
+  //Creates a band from an imput by calculating positon
+  let width = bandWidth(h,k,l);
+  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
+  var cylMaterial = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  for (let i = 0; i < 11; i++) {
+    if (i%2 ==0) {
+      cylinder = new THREE.Mesh(cylGeometry, cylMaterial)
+      cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
+      cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*i/6);
+      scene.add(cylinder);
+    }
+  }
 }
 
 function Bands() {
 
     // defines cylinder Material and radius
-    const radius = 0.48;
     var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     var cylMaterial101 = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     
     // cylinders defined, these are used to highlight Kikuchi band patterns
 
-    
     //cylinders for 100 plane
     width = bandWidth(1,0,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1001 = new THREE.Mesh(cylGeometry, cylMaterial100);
+    cylinder1001.rotation.z = Math.PI/2;
     cylinder1002 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1002.rotation.z = Math.PI/3;
+    cylinder1002.rotation.z = Math.PI/6;
     cylinder1003 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1003.rotation.z = Math.PI-(Math.PI/3);
-
+    cylinder1003.rotation.z = Math.PI-(Math.PI/6);
+    
     //cylinders for 110 plane
     width = bandWidth(1,1,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1101 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1101.rotation.z = Math.PI/2;
     cylinder1102 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1102.rotation.z = Math.PI/6;
+    cylinder1102.rotation.z = Math.PI/3;
     cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1103.rotation.z = Math.PI-(Math.PI/6);
+    cylinder1103.rotation.z = Math.PI-(Math.PI/3);
 
 
     //clylinders for 101 plane
     width = bandWidth(1,0,1);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1011 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1011.rotation.y = Math.PI/6;
-    cylinder1011.rotation.z = Math.PI-(Math.PI/3);
+    cylinder1011.rotation.y = Math.PI*1/6;
+    cylinder1011.rotation.z = Math.PI*(2/3);
     cylinder1011.rotation.x = Math.PI/2;
     cylinder1012 = new THREE.Mesh(cylGeometry, cylMaterial101);
     cylinder1012.rotation.y = Math.PI/6;
