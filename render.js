@@ -14,8 +14,9 @@ const z = new THREE.Vector3( 0, 0, 1 );
 const radius = 0.48;
 const a = 3.18e-10;
 const c = 5.166e-10;
-
-
+const colour = [0xFF0000,0x00FFFF,0xFFFF00,0x00FF00,0x800080,0xFFA500]
+let counter = 0
+let cylinderNames = []
 
 function init() {
     // sets scene and camera angle
@@ -45,6 +46,9 @@ function init() {
     // generates cube
     scene.add(cube);
 
+    // z-axis position of camera, centre of cube at position 0
+    camera.position.z = 0;
+
   
 }
 
@@ -68,7 +72,6 @@ function N2Cangle(h,k,l) {
   // calculates the angle between the normal of the plane and the c-axis
   let W = (3*(a**2))/(2*(c**2))*l;
   let angle = Math.acos(((c**2)*W)/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))));
-  console.log(angle)
   return angle;
 }
 
@@ -76,7 +79,6 @@ function N2Aangle(h,k,l) {
   // calculates the angle between the normal of the plane and the a-axis
   let W = (3*(a**2))/(2*(c**2))*l;
   let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))))
-  console.log(angle)
   return angle;
 }
 
@@ -90,10 +92,28 @@ function Band101(h,k,l) {
     cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
     cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/6);
     cylinder.name = i
-    console.log(i);
-    console.log(cylinder);
     scene.add(cylinder);
   }
+}
+
+function BandCreate(h,k,l) {
+// creating a function that displays any plane given to it
+  let width = bandWidth(h,k,l);
+  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
+  var cylMaterial = new THREE.MeshBasicMaterial({color: colour[counter], side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  let N2C = N2Cangle(h,k,l)
+  let N2A = N2Aangle(h,k,l)
+  let iterations = Math.round(2*Math.PI/N2C)
+  console.log(iterations)
+  for (let i = 0; i < (iterations+1); i++) {
+    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2C);
+    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*i/iterations);
+    cylinder.name = [i,counter].join()
+    cylinderNames.push(cylinder.name)
+    scene.add(cylinder);
+  }
+  counter += 1
 }
 
 function Bands() {
@@ -101,7 +121,6 @@ function Bands() {
     // defines cylinder Material and radius
     var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-    var cylMaterial101 = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     
     // cylinders defined, these are used to highlight Kikuchi band patterns
 
@@ -123,9 +142,6 @@ function Bands() {
     cylinder1102.rotation.z = Math.PI/3;
     cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
     cylinder1103.rotation.z = Math.PI-(Math.PI/3);
-
-    // z-axis position of camera, centre of cube at position 0
-    camera.position.z = 0;
 }
 
 function addband100() {
