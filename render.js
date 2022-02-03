@@ -73,6 +73,7 @@ function N2Cangle(h,k,l) {
 }
 
 function N2Aangle(h,k,l) {
+  // calculates the angle between the normal of the plane and the a-axis
   let W = (3*(a**2))/(2*(c**2))*l;
   let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))))
   console.log(angle)
@@ -84,13 +85,14 @@ function Band101(h,k,l) {
   let width = bandWidth(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  for (let i = 0; i < 11; i++) {
-    if (i%2 ==0) {
-      cylinder = new THREE.Mesh(cylGeometry, cylMaterial)
-      cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
-      cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*i/6);
-      scene.add(cylinder);
-    }
+  for (let i = 0; i < 7; i++) {
+    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
+    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/6);
+    cylinder.name = i
+    console.log(i);
+    console.log(cylinder);
+    scene.add(cylinder);
   }
 }
 
@@ -182,7 +184,10 @@ function removeband110() {
 
 function removeband101() {
   //Displays cylinders that highlight the kikuchi bands within the 100 plane
-  scene.remove(cylinder1011,cylinder1012,cylinder1013,cylinder1014,cylinder1015,cylinder1016);
+  for (let j = 0; j < 7 ;j++) {
+    scene.remove(scene.getObjectByName(j));
+    scene.remove(scene.getObjectByName(j));
+  }
 }
 
 function animate() {
