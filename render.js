@@ -167,7 +167,7 @@ function addband110() {
 
 function addband101() {
   //Displays cylinders that highlight the kikuchi bands within the 100 plane
-  scene.add(cylinder1011,cylinder1012,cylinder1013,cylinder1014,cylinder1015,cylinder1016);
+  Band101(1,0,1);
 }
 
 function removeband100() {
