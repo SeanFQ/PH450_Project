@@ -124,35 +124,6 @@ function Bands() {
     cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
     cylinder1103.rotation.z = Math.PI-(Math.PI/3);
 
-
-    //clylinders for 101 plane
-    width = bandWidth(1,0,1);
-    var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-    cylinder1011 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1011.rotation.y = Math.PI*1/6;
-    cylinder1011.rotation.z = Math.PI*(2/3);
-    cylinder1011.rotation.x = Math.PI/2;
-    cylinder1012 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1012.rotation.y = Math.PI/6;
-    cylinder1012.rotation.z = Math.PI/3;
-    cylinder1012.rotation.x = Math.PI/2;
-    cylinder1013 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1013.rotation.y = Math.PI-(Math.PI/6);
-    cylinder1013.rotation.z = Math.PI/3;
-    cylinder1013.rotation.x = Math.PI/2;
-    cylinder1014 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1014.rotation.y = Math.PI-(Math.PI/6);
-    cylinder1014.rotation.z = Math.PI-(Math.PI/3);
-    cylinder1014.rotation.x = Math.PI/2;
-    cylinder1015 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1015.rotation.z = Math.PI/3;
-    cylinder1015.rotation.y = Math.PI/2;
-    cylinder1015.rotation.x = Math.PI/2;
-    cylinder1016 = new THREE.Mesh(cylGeometry, cylMaterial101);
-    cylinder1016.rotation.z = Math.PI-(Math.PI/3);
-    cylinder1016.rotation.y = Math.PI/2;
-    cylinder1016.rotation.x = Math.PI/2;
-    
     // z-axis position of camera, centre of cube at position 0
     camera.position.z = 0;
 }
