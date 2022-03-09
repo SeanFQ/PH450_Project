@@ -185,6 +185,18 @@ function animate() {
     renderer.render(scene, camera);
   }
 
+function locate(a,b){
+  var str = b;
+  if (str.slice(0,1)=="{") {
+    var qarray = str.slice(1,str.length-1).split(" ");
+    q1 = qarray[0];
+    q2 = qarray[1];
+    q3 = qarray[2];
+    q4 = qarray[3];
+  }
+  animate();
+}
+
 init();
 animate();
 Bands();
