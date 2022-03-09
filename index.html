@@ -23,7 +23,7 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set axes unitcell;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
+      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
     });
   function locate(a,b){
     var str = b;

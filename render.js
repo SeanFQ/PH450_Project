@@ -8,9 +8,11 @@ var q1 = 0;
 var q2 = 0;
 var q3 = 0;
 var q4 = 1;
+
 const x = new THREE.Vector3( 1, 0, 0 );
 const y = new THREE.Vector3( 0, 1, 0 );
 const z = new THREE.Vector3( 0, 0, 1 );
+
 const radius = 0.48;
 const a = 3.18e-10;
 const c = 5.166e-10;
@@ -64,10 +66,6 @@ function bandWidth(h,k,l) {
   
 }
 
-//function planenormal(h,k,l) {
-//  return [h,k,-h-k,(3*(a**2))/(2*(c**2))*l]
-//}
-
 function N2Cangle(h,k,l) {
   // calculates the angle between the normal of the plane and the c-axis
   let W = (3*(a**2))/(2*(c**2))*l;
@@ -83,7 +81,7 @@ function N2Aangle(h,k,l) {
 }
 
 function Band101(h,k,l) {
-  //Creates a band from an imput by calculating positon
+  //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
