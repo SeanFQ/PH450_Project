@@ -61,6 +61,7 @@ function bandWidth(h,k,l) {
   const lamda = 8.5885e-12;
   let d = a/(Math.sqrt(4/3*((h**2) + h*k + (k**2))+((a**2)/(c**2))*(l**2)))
   let BraggAngle = Math.asin((n*lamda)/(2*(d)));
+  console.log(BraggAngle)
   let width = 2*radius*Math.tan(BraggAngle);
   return width;
   
