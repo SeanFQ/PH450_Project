@@ -2,6 +2,9 @@
 let scene, camera, renderer, cube;
 // documentation for reference in index.html
 let kikuchi = document.getElementById("ThreeDiv");
+
+// defining constants
+
 // default quaternion values
 var quaternion = new THREE.Quaternion();
 var q1 = 0;
@@ -9,16 +12,26 @@ var q2 = 0;
 var q3 = 0;
 var q4 = 1;
 
+//unit vectors
 const x = new THREE.Vector3( 1, 0, 0 );
 const y = new THREE.Vector3( 0, 1, 0 );
 const z = new THREE.Vector3( 0, 0, 1 );
 
-const radius = 0.48;
+const radius = 0.48; //radius of the cylinders
+
+// lattice vectors
 const a = 3.18e-10;
 const c = 5.166e-10;
-const colour = [0xFF0000,0x00FFFF,0xFFFF00,0x00FF00,0x800080,0xFFA500]
-let counter = 0
-let cylinderNames = []
+
+const n = 1; // order of diffraction
+const lightspeed = 299792458; //speed of light
+const me = 9.1094897*10**-31; //mass of an electron
+const e = 1.60217733*10**-19; //charge of an electron
+const h = 6.62607004*10**-34; //plancks constant
+const beamV = 20000; // accelerating voltage of electron beam
+
+// calculating the wavelength of the beam
+const lamda = h/(Math.sqrt(2*me*e*beamV*(1+(e/2*me*(lightspeed)**2)*beamV)));
 
 function init() {
     // sets scene and camera angle
@@ -56,15 +69,10 @@ function init() {
 
 //calculates the width of the kikuchi band through Bragg's Law
 function bandWidth(h,k,l) {
-  const n = 1;
-  const beamV = 20;
-  const lamda = 8.5885e-12;
   let d = a/(Math.sqrt(4/3*((h**2) + h*k + (k**2))+((a**2)/(c**2))*(l**2)))
   let BraggAngle = Math.asin((n*lamda)/(2*(d)));
-  console.log(BraggAngle)
   let width = 2*radius*Math.tan(BraggAngle);
   return width;
-  
 }
 
 function N2Cangle(h,k,l) {
@@ -95,35 +103,15 @@ function Band101(h,k,l) {
   }
 }
 
-function BandCreate(h,k,l) {
-// creating a function that displays any plane given to it
-  let width = bandWidth(h,k,l);
-  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-  var cylMaterial = new THREE.MeshBasicMaterial({color: colour[counter], side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  let N2C = N2Cangle(h,k,l)
-  let N2A = N2Aangle(h,k,l)
-  let iterations = Math.round(2*Math.PI/N2C)
-  console.log(iterations)
-  for (let i = 0; i < (iterations+1); i++) {
-    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2C);
-    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*i/iterations);
-    cylinder.name = [i,counter].join()
-    cylinderNames.push(cylinder.name)
-    scene.add(cylinder);
-  }
-  counter += 1
-}
-
 function Bands() {
 
-    // defines cylinder Material and radius
+    // defines cylinder Material
     var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
     
     // cylinders defined, these are used to highlight Kikuchi band patterns
 
-    //cylinders for 100 plane
+    //cylinders for (100) plane, calculates thier widths and defines their positions
     width = bandWidth(1,0,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1001 = new THREE.Mesh(cylGeometry, cylMaterial100);
@@ -133,7 +121,7 @@ function Bands() {
     cylinder1003 = new THREE.Mesh(cylGeometry, cylMaterial100);
     cylinder1003.rotation.z = Math.PI-(Math.PI/6);
     
-    //cylinders for 110 plane
+    //cylinders for (110) plane, calculates thier widths and defines their positions
     width = bandWidth(1,1,0);
     var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
     cylinder1101 = new THREE.Mesh(cylGeometry, cylMaterial110);
@@ -149,27 +137,27 @@ function addband100() {
 }
 
 function addband110() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  //Displays cylinders that highlight the kikuchi bands within the 110 plane
   scene.add(cylinder1101,cylinder1102,cylinder1103);
 }
 
 function addband101() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  //Displays cylinders that highlight the kikuchi bands within the 101 plane
   Band101(1,0,1);
 }
 
 function removeband100() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  //removes cylinders that highlight the kikuchi bands within the 100 plane
   scene.remove(cylinder1001,cylinder1002,cylinder1003);
 }
 
 function removeband110() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  //removes cylinders that highlight the kikuchi bands within the 110 plane
   scene.remove(cylinder1101,cylinder1102,cylinder1103);
 }
 
 function removeband101() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
+  //removes cylinders that highlight the kikuchi bands within the 101 plane
   for (let j = 0; j < 7 ;j++) {
     scene.remove(scene.getObjectByName(j));
     scene.remove(scene.getObjectByName(j));
@@ -187,6 +175,7 @@ function animate() {
   }
 
 function locate(a,b){
+  // relays the rotation information from the unit cell to the pattern by changing the quarternion values
   var str = b;
   if (str.slice(0,1)=="{") {
     var qarray = str.slice(1,str.length-1).split(" ");
