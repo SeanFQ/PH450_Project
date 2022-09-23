@@ -89,6 +89,20 @@ function N2Aangle(h,k,l) {
   return angle;
 }
 
+function HighlightBands(h,k,l) {
+  //Creates a band from an input by calculating positon
+  let width = bandWidth(h,k,l);
+  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
+  var cylMaterial = new THREE.MeshBasicMaterial({color: 0x97EA52, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  for (let i = 0; i < 7; i++) {
+    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
+    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/6);
+    cylinder.name = i
+    scene.add(cylinder);
+  }
+}
+
 function Band101(h,k,l) {
   //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
@@ -184,6 +198,15 @@ function locate(a,b){
     q3 = qarray[2];
     q4 = qarray[3];
   }
+  animate();
+}
+
+function reset(){
+  q1 = 0;
+  q2 = 0;
+  q3 = 0;
+  q4 = 1;
+  
   animate();
 }
 

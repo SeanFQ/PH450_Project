@@ -21,7 +21,7 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation');
+      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4');
     });
     </script>
 
@@ -36,10 +36,33 @@
   </tr>
 </table>
 
+<form id="HKLInput" action="/action_page.php">
+  H: <input type="number" id="HInput">
+  K: <input type="number" id="KInput">
+  L: <input type="number" id="LInput">
+  <input type="button" onclick="SubmitVals()" value="Submit">
+</form>
+
+<script>
+function SubmitVals() {
+  Jmol.script(myJmol,'isosurface p4 delete')
+  const HInputs = document.getElementById("HInput").value;
+  const KInputs = document.getElementById("KInput").value;
+  const LInputs = document.getElementById("LInput").value;
+  removeband101()
+  HighlightBands(HInputs,KInputs,LInputs)
+  Jmol.script(myJmol, 'isosurface p4 hkl {HInputs KInputs LInputs} boundbox;color isosurface blue translucent')
+}
+</script>
+
 <script type="text/javascript">
   Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set MessageCallback "addband100"', "isosurface p1 delete;set MessageCallback 'removeband100'", " 100-plane");
   Jmol.jmolCheckbox(myJmol, "isosurface p2 hkl {1 1 0} boundbox;color isosurface green translucent;set MessageCallback 'addband110'", "isosurface p2 delete;set MessageCallback 'removeband110'", " 110-plane");
   Jmol.jmolCheckbox(myJmol, "isosurface p3 hkl {1 0 1} boundbox;color isosurface blue translucent;set MessageCallback 'addband101'", "isosurface p3 delete;set MessageCallback 'removeband101'", " 101-plane");
+ </script>
+
+<script type="text/javascript">
+  Jmol.jmolButton(myJmol, "reset;set MessageCallback 'reset'", "Reset to original orientation");
  </script>
 
 <script src="./resources/three.js/build/three.min.js"></script>
