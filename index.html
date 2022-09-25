@@ -21,7 +21,7 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif packed;set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4');
+      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif {445,665,-1};set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4');
     });
     </script>
 
@@ -49,9 +49,9 @@ function SubmitVals() {
   const HInputs = document.getElementById("HInput").value;
   const KInputs = document.getElementById("KInput").value;
   const LInputs = document.getElementById("LInput").value;
-  removeband101()
-  HighlightBands(HInputs,KInputs,LInputs)
-  Jmol.script(myJmol, 'isosurface p4 hkl {HInputs KInputs LInputs} boundbox;color isosurface blue translucent')
+  removeband101();
+  Jmol.script(myJmol, `isosurface p4 hkl {${String(HInputs)} ${String(KInputs)} ${String(LInputs)}} boundbox;color isosurface red translucent`);
+  HighlightBands(HInputs,KInputs,LInputs);
 }
 </script>
 

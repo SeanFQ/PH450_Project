@@ -89,15 +89,21 @@ function N2Aangle(h,k,l) {
   return angle;
 }
 
+function Multiplicity(h,k,l) {
+  // caluclates the multiplicity - the number of bands that relate to a specified plane
+  return 6;
+}
+
 function HighlightBands(h,k,l) {
   //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
+  let bandnumber = Multiplicity(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-  var cylMaterial = new THREE.MeshBasicMaterial({color: 0x97EA52, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  for (let i = 0; i < 7; i++) {
+  var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  for (let i = 0; i < (bandnumber); i++) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
     cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
-    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/6);
+    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/bandnumber);
     cylinder.name = i
     scene.add(cylinder);
   }
