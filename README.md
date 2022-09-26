@@ -1,4 +1,4 @@
-# PH450_Project
+# PH50_Project
 These are my project files for a web-based electron diffraction tool
 
 You will need to install Jmol
