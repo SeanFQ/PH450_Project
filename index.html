@@ -11,11 +11,6 @@
 </head>
 <body>
 
-<script>
-  const CIF = 'GaN'
-  const Texture = `${CIF}/20keV`
-</script>
-
 <script type="text/javascript">var myJmol = 'myJmol';
     var JmolInfo = {
      width:'100%',
@@ -26,9 +21,26 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, `load ./Model/${CIF}.cif {445,665,-1};set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4`);
+      Jmol.script(myJmol, `load ./Model/GaN.cif {445,665,-1};set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4`);
     });
     </script>
+
+<form action="/action_page.php">
+  <label for="CrystalFile">Crystal Model:</label>
+  <select name="Cif" id="Cif">
+    <option value="GaN">Wurtzite</option>
+    <option value="Zincblende">Zincblende</option>
+  </select>
+  <label for="cars">Accelerating voltage:</label>
+  <select name="EAV" id="EAV">
+    <option value=20>20keV</option>
+    <option value=10>10keV</option>
+    <option value=5>5keV</option>
+  </select>
+  <input type="button" onclick="TextureChange()" value="Submit">
+</form>
+
+
 
 <table>
   <tr>
@@ -47,18 +59,6 @@
   L: <input type="number" id="LInput">
   <input type="button" onclick="SubmitVals()" value="Submit">
 </form>
-
-<script>
-function SubmitVals() {
-  Jmol.script(myJmol,'isosurface p4 delete')
-  const HInputs = document.getElementById("HInput").value;
-  const KInputs = document.getElementById("KInput").value;
-  const LInputs = document.getElementById("LInput").value;
-  removeband101();
-  Jmol.script(myJmol, `isosurface p4 hkl {${String(HInputs)} ${String(KInputs)} ${String(LInputs)}} boundbox;color isosurface red translucent`);
-  HighlightBands(HInputs,KInputs,LInputs);
-}
-</script>
 
 <script type="text/javascript">
   Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set MessageCallback "addband100"', "isosurface p1 delete;set MessageCallback 'removeband100'", " 100-plane");

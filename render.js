@@ -27,11 +27,11 @@ const n = 1; // order of diffraction
 const lightspeed = 299792458; //speed of light
 const me = 9.1094897*10**-31; //mass of an electron
 const e = 1.60217733*10**-19; //charge of an electron
-const h = 6.62607004*10**-34; //plancks constant
-const beamV = 20000; // accelerating voltage of electron beam
+const plancksconstant = 6.62607004*10**-34; //plancks constant
+var beamV = 20000; // accelerating voltage of electron beam
 
 // calculating the wavelength of the beam
-const lamda = h/(Math.sqrt(2*me*e*beamV*(1+(e/2*me*(lightspeed)**2)*beamV)));
+var lamda = plancksconstant/(Math.sqrt(2*me*e*beamV*(1+(e/2*me*(lightspeed)**2)*beamV)));
 
 function init() {
     // sets scene and camera angle
@@ -49,12 +49,12 @@ function init() {
     const geometry = new THREE.BoxGeometry();
     const loader = new THREE.TextureLoader();
     const materials = [
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/1.png`), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/2.png`), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/3.png`), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/4.png`), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/5.png`), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/6.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/18090n90.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/909090.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/090180.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/n90900.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/18000.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/GaN/20keV/01800.png`), side: THREE.DoubleSide}),
     ];
     cube = new THREE.Mesh(geometry, materials);
   
@@ -66,8 +66,36 @@ function init() {
 
 }
 
+function TextureChange() {
+  scene.remove(cube)
+  let CIF = document.getElementById("Cif").value;
+  let AcceleratingVoltage = document.getElementById("EAV").value;
+  let Texture = `${CIF}/${AcceleratingVoltage}keV`
+  console.log(CIF)
+  console.log(Texture)
+  const geometry = new THREE.BoxGeometry();
+  const loader = new THREE.TextureLoader();
+  const materials = [
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/18090n90.png`), side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/909090.png`), side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/090180.png`), side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/n90900.png`), side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/18000.png`), side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/01800.png`), side: THREE.DoubleSide}),
+  ];
+  cube = new THREE.Mesh(geometry, materials);
+  
+  // generates cube
+  scene.add(cube);
+  Jmol.script(myJmol,`load ./Model/${CIF}.cif {445,665,-1}`)
+
+}
+
 //calculates the width of the kikuchi band through Bragg's Law
 function bandWidth(h,k,l) {
+  let AcceleratingVoltage = document.getElementById("EAV").value;
+  var beamV = AcceleratingVoltage*1000;
+  var lamda = plancksconstant/(Math.sqrt(2*me*e*beamV*(1+(e/2*me*(lightspeed)**2)*beamV)));
   let d = a/(Math.sqrt(4/3*((h**2) + h*k + (k**2))+((a**2)/(c**2))*(l**2)))
   let BraggAngle = Math.asin((n*lamda)/(2*(d)));
   let width = 2*radius*Math.tan(BraggAngle);
@@ -213,6 +241,16 @@ function reset(){
   q4 = 1;
   
   animate();
+}
+
+function SubmitVals() {
+  Jmol.script(myJmol,'isosurface p4 delete')
+  removeband101();
+  const HInputs = document.getElementById("HInput").value;
+  const KInputs = document.getElementById("KInput").value;
+  const LInputs = document.getElementById("LInput").value;
+  Jmol.script(myJmol, `isosurface p4 hkl {${String(HInputs)} ${String(KInputs)} ${String(LInputs)}} boundbox;color isosurface red translucent`);
+  HighlightBands(HInputs,KInputs,LInputs);
 }
 
 init();
