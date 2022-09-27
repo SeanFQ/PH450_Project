@@ -11,6 +11,11 @@
 </head>
 <body>
 
+<script>
+  const CIF = 'GaN'
+  const Texture = `${CIF}/20keV`
+</script>
+
 <script type="text/javascript">var myJmol = 'myJmol';
     var JmolInfo = {
      width:'100%',
@@ -21,7 +26,7 @@
     }
     $(document).ready(function(){
       $('#JmolDiv').html( Jmol.getAppletHtml(myJmol, JmolInfo) );
-      Jmol.script(myJmol, 'load ./Model/Wurtzite.cif {445,665,-1};set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4');
+      Jmol.script(myJmol, `load ./Model/${CIF}.cif {445,665,-1};set antialiasDisplay ON;set EchoCallback "locate";bind "LEFT+drag" "+:show rotation";show rotation;set logLevel 4`);
     });
     </script>
 

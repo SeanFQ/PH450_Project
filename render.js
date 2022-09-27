@@ -49,12 +49,12 @@ function init() {
     const geometry = new THREE.BoxGeometry();
     const loader = new THREE.TextureLoader();
     const materials = [
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/1.png'), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/2.png'), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/3.png'), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/4.png'), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/5.png'), side: THREE.DoubleSide}),
-      new THREE.MeshBasicMaterial({map: loader.load('./Model/GaN/20keV/6.png'), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/1.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/2.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/3.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/4.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/5.png`), side: THREE.DoubleSide}),
+      new THREE.MeshBasicMaterial({map: loader.load(`./Model/${Texture}/6.png`), side: THREE.DoubleSide}),
     ];
     cube = new THREE.Mesh(geometry, materials);
   
