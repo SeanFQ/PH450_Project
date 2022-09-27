@@ -71,8 +71,6 @@ function TextureChange() {
   let CIF = document.getElementById("Cif").value;
   let AcceleratingVoltage = document.getElementById("EAV").value;
   let Texture = `${CIF}/${AcceleratingVoltage}keV`
-  console.log(CIF)
-  console.log(Texture)
   const geometry = new THREE.BoxGeometry();
   const loader = new THREE.TextureLoader();
   const materials = [
