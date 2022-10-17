@@ -53,12 +53,13 @@
   </tr>
 </table>
 
-<form id="HKLInput" action="/action_page.php">
-  H: <input type="number" id="HInput">
-  K: <input type="number" id="KInput">
-  L: <input type="number" id="LInput">
-  <input type="button" onclick="SubmitVals()" value="Submit">
-</form>
+
+H: <input type="number" id="HInput">
+K: <input type="number" id="KInput">
+i: <span id="IInputs"></span> 
+L: <input type="number" id="LInput">
+<input type="button" onclick="SubmitVals()" value="Submit">
+
 
 <script type="text/javascript">
   Jmol.jmolCheckbox(myJmol, 'isosurface p1 hkl {1 0 0} boundbox;color isosurface red translucent;set MessageCallback "addband100"', "isosurface p1 delete;set MessageCallback 'removeband100'", " 100-plane");

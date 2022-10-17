@@ -100,50 +100,80 @@ function bandWidth(h,k,l) {
   return width;
 }
 
-function N2Cangle(h,k,l) {
-  // calculates the angle between the normal of the plane and the c-axis
+function N2Aangle(h,k,i,l) {
+  // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
   let W = (3*(a**2))/(2*(c**2))*l;
-  let angle = Math.acos(((c**2)*W)/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))));
+  //let angle1 = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))) //old and incorrect 
+  let angle = Math.acos(((a**2)*(3*(2*h-k)+(3/2)*(2*k-h))/(3*a*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))))
   return angle;
 }
 
-function N2Aangle(h,k,l) {
-  // calculates the angle between the normal of the plane and the a-axis
+function N2Cangle(h,k,i,l) {
+  // calculates the angle between the normal of the plane and the direction of the c-axis [0,0,0,1]
   let W = (3*(a**2))/(2*(c**2))*l;
-  let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+k**2)+(c**2)*(W**2))))
+  let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
   return angle;
+}
+
+function Factorial(num){
+    var val=1;
+    for (var i = 2; i <= num; i++)
+        val = val * i;
+    return val;
 }
 
 function Multiplicity(h,k,l) {
   // caluclates the multiplicity - the number of bands that relate to a specified plane
+  if (h==k==l){
+    num = 3;
+  } else if (h==k|| k==l || h==l){
+    num = 2;
+  } else {
+    num = 0;
+  }
+
+  let N = 0;
+  if (h==0){
+    N += 1;
+  }
+  if (k==0){
+    N += 1;
+  }
+  if (l==0){
+    N += 1;
+  }
+
+  m = (Factorial(3)*(2**(3-N)))/Factorial(n);
+  console.log(m)
+
   return 6;
 }
 
-function HighlightBands(h,k,l) {
+function HighlightBands(h,k,i,l) {
   //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
   let bandnumber = Multiplicity(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  for (let i = 0; i < (bandnumber); i++) {
+  for (let count = 0; count < (bandnumber); count++) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
-    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/bandnumber);
-    cylinder.name = i
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,i,l));
+    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,i,l)+Math.PI*2*count/bandnumber);
+    cylinder.name = count
     scene.add(cylinder);
   }
 }
 
-function Band101(h,k,l) {
+function Band101(h,k,i,l) {
   //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  for (let i = 0; i < 7; i++) {
+  for (let count = 0; count < 7; count++) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,l));
-    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,l)+Math.PI*2*i/6);
-    cylinder.name = i
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,i,l));
+    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,i,l)+Math.PI*2*count/6);
+    cylinder.name = count
     scene.add(cylinder);
   }
 }
@@ -246,9 +276,11 @@ function SubmitVals() {
   removeband101();
   const HInputs = document.getElementById("HInput").value;
   const KInputs = document.getElementById("KInput").value;
+  const IInputs = -(Number(HInputs)+Number(KInputs))
+  document.getElementById('IInputs').innerHTML = IInputs;
   const LInputs = document.getElementById("LInput").value;
   Jmol.script(myJmol, `isosurface p4 hkl {${String(HInputs)} ${String(KInputs)} ${String(LInputs)}} boundbox;color isosurface red translucent`);
-  HighlightBands(HInputs,KInputs,LInputs);
+  HighlightBands(HInputs,KInputs,IInputs,LInputs);
 }
 
 init();
