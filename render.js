@@ -103,8 +103,9 @@ function bandWidth(h,k,l) {
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
   let W = (3*(a**2))/(2*(c**2))*l;
-  //let angle1 = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))) //old and incorrect 
-  let angle = Math.acos(((a**2)*(3*(2*h-k)+(3/2)*(2*k-h))/(3*a*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))))
+  //let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))) //old and incorrect 
+  let angle = Math.acos(((a**2)*(3*(2*h-k)+(3/2)*(2*k-h))/(3*a*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))));
+  console.log(angle);
   return angle;
 }
 
@@ -112,6 +113,7 @@ function N2Cangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the c-axis [0,0,0,1]
   let W = (3*(a**2))/(2*(c**2))*l;
   let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
+  console.log(angle);
   return angle;
 }
 
@@ -155,83 +157,18 @@ function HighlightBands(h,k,i,l) {
   let bandnumber = Multiplicity(h,k,l);
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  const N2A = N2Aangle(h,k,i,l)
+  const N2C = N2Cangle(h,k,i,l)
   for (let count = 0; count < (bandnumber); count++) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,i,l));
-    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,i,l)+Math.PI*2*count/bandnumber);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2C);
+    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/bandnumber);
     cylinder.name = count
     scene.add(cylinder);
   }
 }
 
-function Band101(h,k,i,l) {
-  //Creates a band from an input by calculating positon
-  let width = bandWidth(h,k,l);
-  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-  var cylMaterial = new THREE.MeshBasicMaterial({color: 0x00d6c1, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  for (let count = 0; count < 7; count++) {
-    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2Cangle(h,k,i,l));
-    cylinder.rotateOnWorldAxis(z,N2Aangle(h,k,i,l)+Math.PI*2*count/6);
-    cylinder.name = count
-    scene.add(cylinder);
-  }
-}
-
-function Bands() {
-
-    // defines cylinder Material
-    var cylMaterial100 = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-    var cylMaterial110 = new THREE.MeshBasicMaterial({color: 0x00c400, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-    
-    // cylinders defined, these are used to highlight Kikuchi band patterns
-
-    //cylinders for (100) plane, calculates thier widths and defines their positions
-    width = bandWidth(1,0,0);
-    var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-    cylinder1001 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1001.rotation.z = Math.PI/2;
-    cylinder1002 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1002.rotation.z = Math.PI/6;
-    cylinder1003 = new THREE.Mesh(cylGeometry, cylMaterial100);
-    cylinder1003.rotation.z = Math.PI-(Math.PI/6);
-    
-    //cylinders for (110) plane, calculates thier widths and defines their positions
-    width = bandWidth(1,1,0);
-    var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-    cylinder1101 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1102 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1102.rotation.z = Math.PI/3;
-    cylinder1103 = new THREE.Mesh(cylGeometry, cylMaterial110);
-    cylinder1103.rotation.z = Math.PI-(Math.PI/3);
-}
-
-function addband100() {
-  //Displays cylinders that highlight the kikuchi bands within the 100 plane
-  scene.add(cylinder1001,cylinder1002,cylinder1003);
-}
-
-function addband110() {
-  //Displays cylinders that highlight the kikuchi bands within the 110 plane
-  scene.add(cylinder1101,cylinder1102,cylinder1103);
-}
-
-function addband101() {
-  //Displays cylinders that highlight the kikuchi bands within the 101 plane
-  Band101(1,0,1);
-}
-
-function removeband100() {
-  //removes cylinders that highlight the kikuchi bands within the 100 plane
-  scene.remove(cylinder1001,cylinder1002,cylinder1003);
-}
-
-function removeband110() {
-  //removes cylinders that highlight the kikuchi bands within the 110 plane
-  scene.remove(cylinder1101,cylinder1102,cylinder1103);
-}
-
-function removeband101() {
+function removebands() {
   //removes cylinders that highlight the kikuchi bands within the 101 plane
   for (let j = 0; j < 7 ;j++) {
     scene.remove(scene.getObjectByName(j));
@@ -273,7 +210,7 @@ function reset(){
 
 function SubmitVals() {
   Jmol.script(myJmol,'isosurface p4 delete')
-  removeband101();
+  removebands();
   const HInputs = document.getElementById("HInput").value;
   const KInputs = document.getElementById("KInput").value;
   const IInputs = -(Number(HInputs)+Number(KInputs))
