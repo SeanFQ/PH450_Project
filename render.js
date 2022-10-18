@@ -102,7 +102,7 @@ function bandWidth(h,k,l) {
 
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
-  let W = (3*(a**2))/(2*(c**2))*l;
+  let W = (3*(a**2))/(2*(c**2))*l*0;
   //let angle = Math.acos(((a**2)*(9*(h+k)/2))/3*a*(Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))) //old and incorrect 
   //let angle = Math.acos(((a**2)*(3*h+(3/2)*k))/(Math.sqrt(3*(a**2))*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))); //Angle between normal and C-axis [1,0,-1,0] incorrect.
   let angle = Math.acos(((a**2)*(3*(2*h-k)+(3/2)*(2*k-h))/(3*a*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))))); //Angle between normal and direction of C-axis [2,-1,-1,0]
@@ -149,7 +149,7 @@ function Multiplicity(h,k,l) {
   m = (Factorial(3)*(2**(3-N)))/Factorial(n);
   console.log(m)
 
-  return 6;
+  return 12;
 }
 
 function HighlightBands(h,k,i,l) {
@@ -162,8 +162,9 @@ function HighlightBands(h,k,i,l) {
   const N2C = N2Cangle(h,k,i,l)
   for (let count = 0; count < (bandnumber); count++) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2+N2C);
-    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/bandnumber);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2);
+    cylinder.rotateOnWorldAxis(x,N2C);
+    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/6);
     cylinder.name = count
     scene.add(cylinder);
   }
