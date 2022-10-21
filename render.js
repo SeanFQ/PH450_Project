@@ -103,7 +103,9 @@ function bandWidth(h,k,l) {
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
   const W = (3*(a**2))/(2*(c**2))*l;
-  const angle = Math.acos(((a**2)*(3*(2*h-k)+(3/2)*(2*k-h)))/(3*a*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2)))); //Angle between normal and direction of C-axis [2,-1,-1,0]
+  const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
+  const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
+  const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
   console.log(angle);
   return angle;
 }
@@ -114,6 +116,24 @@ function N2Cangle(h,k,i,l) {
   let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
   console.log(angle);
   return angle;
+}
+
+function HighlightBands(h,k,i,l) {
+  //Creates a band from an input by calculating positon
+  let width = bandWidth(h,k,l);
+  let bandnumber = Multiplicity(h,k,l);
+  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
+  var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
+  const N2A = N2Aangle(h,k,i,l)
+  const N2C = N2Cangle(h,k,i,l)
+  for (let count = 0; count < (bandnumber); count++) {
+    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
+    cylinder.rotateOnWorldAxis(x,Math.PI/2);
+    cylinder.rotateOnWorldAxis(x,N2C);
+    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/6);
+    cylinder.name = count
+    scene.add(cylinder);
+  }
 }
 
 function Factorial(num){
@@ -150,23 +170,7 @@ function Multiplicity(h,k,l) {
   return 6;
 }
 
-function HighlightBands(h,k,i,l) {
-  //Creates a band from an input by calculating positon
-  let width = bandWidth(h,k,l);
-  let bandnumber = Multiplicity(h,k,l);
-  var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
-  var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
-  const N2A = N2Aangle(h,k,i,l)
-  const N2C = N2Cangle(h,k,i,l)
-  for (let count = 0; count < (bandnumber); count++) {
-    cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
-    cylinder.rotateOnWorldAxis(x,Math.PI/2);
-    cylinder.rotateOnWorldAxis(x,N2C);
-    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/6);
-    cylinder.name = count
-    scene.add(cylinder);
-  }
-}
+
 
 function removebands() {
   //removes cylinders that highlight the kikuchi bands within the 101 plane
