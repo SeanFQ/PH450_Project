@@ -107,6 +107,9 @@ function N2Aangle(h,k,i,l) {
   const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
   const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
   console.log(angle);
+  if (isNaN(angle)){
+    return 0;
+  }
   return angle;
 }
 
@@ -115,13 +118,18 @@ function N2Cangle(h,k,i,l) {
   let W = (3*(a**2))/(2*(c**2))*l;
   let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
   console.log(angle);
+  if (isNaN(angle)){
+    return 0;
+  }
   return angle;
 }
+
+//hammond the basics of crystallography and diffraction appendix 4 - the correct equation
 
 function HighlightBands(h,k,i,l) {
   //Creates a band from an input by calculating positon
   let width = bandWidth(h,k,l);
-  let bandnumber = Multiplicity(h,k,l);
+  let bandnumber = Number(Multiplicity(h,k,i));
   var cylGeometry = new THREE.CylinderGeometry(radius, radius, width, 30, 30, true);
   var cylMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000, side: THREE.DoubleSide, transparent: true, opacity: 0.3});
   const N2A = N2Aangle(h,k,i,l)
@@ -143,38 +151,66 @@ function Factorial(num){
     return val;
 }
 
-function Multiplicity(h,k,l) {
+function Multiplicity(h,k,i) {
   // caluclates the multiplicity - the number of bands that relate to a specified plane
-  if (h==k==l){
-    num = 3;
-  } else if (h==k|| k==l || h==l){
-    num = 2;
-  } else {
-    num = 0;
+  equivplanes = permutator([h,k,i]);
+  console.log(equivplanes);
+  m = equivplanes.length;
+  //inverse of permutations added to same array
+  for (let count = 0; count < m; count++){
+    let negplane = [];
+    plane = equivplanes[count];
+    for (let ncount = 0; ncount < 3; ncount++){
+      negplane[ncount] = plane[ncount]*-1
+    }
+    equivplanes.push(negplane)
   }
-
-  let N = 0;
-  if (h==0){
-    N += 1;
-  }
-  if (k==0){
-    N += 1;
-  }
-  if (l==0){
-    N += 1;
-  }
-
-  m = (Factorial(3)*(2**(3-N)))/Factorial(n);
-  console.log(m)
-
-  return 6;
+  // remove duplicates
+  equivplanes = eliminateDuplicates(equivplanes)
+  console.log(equivplanes)
+  m = equivplanes.length
+  return m;
 }
 
+function eliminateDuplicates(arr) {
+  let i,
+      len = arr.length,
+      out = [],
+      obj = {};
 
+  for (i = 0; i < len; i++) {
+    obj[arr[i]] = 0;
+  }
+  for (i in obj) {
+    out.push(i);
+  }
+  return out;
+}
+
+function permutator(inputArr) {
+  var results = [];
+
+  function permute(arr, memo) {
+    var cur, memo = memo || [];
+
+    for (var i = 0; i < arr.length; i++) {
+      cur = arr.splice(i, 1);
+      if (arr.length === 0) {
+        results.push(memo.concat(cur));
+      }
+      permute(arr.slice(), memo.concat(cur));
+      arr.splice(i, 0, cur[0]);
+    }
+
+    return results;
+  }
+
+  return permute(inputArr);
+}
 
 function removebands() {
   //removes cylinders that highlight the kikuchi bands within the 101 plane
-  for (let j = 0; j < 7 ;j++) {
+  for (let j = 0; j < 30 ;j++) {
     scene.remove(scene.getObjectByName(j));
     scene.remove(scene.getObjectByName(j));
   }
@@ -212,6 +248,7 @@ function reset(){
   animate();
 }
 
+
 function SubmitVals() {
   Jmol.script(myJmol,'isosurface p4 delete')
   removebands();
@@ -226,4 +263,3 @@ function SubmitVals() {
 
 init();
 animate();
-Bands();
