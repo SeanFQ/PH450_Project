@@ -22,6 +22,7 @@ const radius = 0.48; //radius of the cylinders
 // lattice vectors
 const a = 3.18e-10;
 const c = 5.166e-10;
+const W = (3*(a**2))/(4*(c**2));
 
 const n = 1; // order of diffraction
 const lightspeed = 299792458; //speed of light
@@ -102,9 +103,16 @@ function bandWidth(h,k,l) {
 
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
-  const W = (3*(a**2))/(2*(c**2))*l;
-  const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
-  const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
+ // W = ((3*a**2)/(2*c**2))*l
+  //const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
+  //const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
+  // find normal of plane:
+  let n1 = h
+  let n2 = k
+  let n3 = ((3*(a**2))/(2*(c**2)))*l
+  //calculate angle between the normal of the plane and the a-axis
+  const num = n1 + (n2/2);
+  const den = Math.sqrt((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)));
   const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
   console.log(angle);
   if (isNaN(angle)){
@@ -115,8 +123,14 @@ function N2Aangle(h,k,i,l) {
 
 function N2Cangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the c-axis [0,0,0,1]
-  let W = (3*(a**2))/(2*(c**2))*l;
-  let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
+  //W = ((3*a**2)/(2*c**2))*l
+  //let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
+  let n1 = h
+  let n2 = k
+  let n3 = ((3*(a**2))/(2*(c**2)))*l
+  const num = (W*n3)
+  const den = Math.sqrt(((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)))*(W))
+  const angle = Math.acos(num/den);
   console.log(angle);
   if (isNaN(angle)){
     return 0;
@@ -124,7 +138,9 @@ function N2Cangle(h,k,i,l) {
   return angle;
 }
 
-//hammond the basics of crystallography and diffraction appendix 4 - the correct equation
+//hammond the basics of crystallography and diffraction appendix 4 - angle between planes equation - suspect problems
+
+//change colour of bands!!! examiner is colour blind - think irn bru
 
 function HighlightBands(h,k,i,l) {
   //Creates a band from an input by calculating positon
