@@ -22,7 +22,7 @@ const radius = 0.48; //radius of the cylinders
 // lattice vectors
 const a = 3.18e-10;
 const c = 5.166e-10;
-const W = (3*(a**2))/(4*(c**2));
+//const W = (3*(a**2))/(4*(c**2));
 
 const n = 1; // order of diffraction
 const lightspeed = 299792458; //speed of light
@@ -103,16 +103,18 @@ function bandWidth(h,k,l) {
 
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
- // W = ((3*a**2)/(2*c**2))*l
-  //const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
-  //const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
+  W = ((3*a**2)/(2*c**2))*l
+  const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
+  const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
   // find normal of plane:
-  let n1 = h
-  let n2 = k
-  let n3 = ((3*(a**2))/(2*(c**2)))*l
+  //let n1 = Number(h)
+  //let n2 = Number(k)
+  //let n3 = Number(((3*(a**2))/(2*(c**2)))*l)
   //calculate angle between the normal of the plane and the a-axis
-  const num = n1 + (n2/2);
-  const den = Math.sqrt((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)));
+  //const num = n1 + (n2/2);
+  console.log(num);
+  //const den = Math.sqrt((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)));
+  console.log(den)
   const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
   console.log(angle);
   if (isNaN(angle)){
@@ -123,14 +125,14 @@ function N2Aangle(h,k,i,l) {
 
 function N2Cangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the c-axis [0,0,0,1]
-  //W = ((3*a**2)/(2*c**2))*l
-  //let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
-  let n1 = h
-  let n2 = k
-  let n3 = ((3*(a**2))/(2*(c**2)))*l
-  const num = (W*n3)
-  const den = Math.sqrt(((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)))*(W))
-  const angle = Math.acos(num/den);
+  W = ((3*a**2)/(2*c**2))*l
+  let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
+  //let n1 = h
+  //let n2 = k
+  //let n3 = ((3*(a**2))/(2*(c**2)))*l
+  //const num = (W*n3)
+  //const den = Math.sqrt(((n1**2)+(n2**2)+(n1*n2)+(W*(n3**2)))*(W))
+  //const angle = Math.acos(num/den);
   console.log(angle);
   if (isNaN(angle)){
     return 0;
@@ -154,7 +156,11 @@ function HighlightBands(h,k,i,l) {
     cylinder = new THREE.Mesh(cylGeometry, cylMaterial);
     cylinder.rotateOnWorldAxis(x,Math.PI/2);
     cylinder.rotateOnWorldAxis(x,N2C);
-    cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/6);
+    if (count>5){
+      cylinder.rotateOnWorldAxis(z,-N2A-Math.PI*2*count/6)
+    } else{
+      cylinder.rotateOnWorldAxis(z,N2A+Math.PI*2*count/6)
+    }
     cylinder.name = count
     scene.add(cylinder);
   }
@@ -170,7 +176,6 @@ function Factorial(num){
 function Multiplicity(h,k,i) {
   // caluclates the multiplicity - the number of bands that relate to a specified plane
   equivplanes = permutator([h,k,i]);
-  console.log(equivplanes);
   m = equivplanes.length;
   //inverse of permutations added to same array
   for (let count = 0; count < m; count++){
