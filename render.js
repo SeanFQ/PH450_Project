@@ -106,10 +106,8 @@ function N2Aangle(h,k,i,l) {
   W = ((3*a**2)/(2*c**2))*l
   const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
   const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
-  console.log(num);
-  console.log(den)
   const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
-  console.log(angle);
+  console.log("Normal to A axis:",angle);
   if (isNaN(angle)){
     return 0;
   }
@@ -120,7 +118,7 @@ function N2Cangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the c-axis [0,0,0,1]
   W = ((3*a**2)/(2*c**2))*l
   let angle = Math.acos((W*(c**2))/(c*Math.sqrt(3*(a**2)*((h**2)+h*k+(k**2))+(c**2)*(W**2))));
-  console.log(angle);
+  console.log("Normal to C axis",angle);
   if (isNaN(angle)){
     return 0;
   }
@@ -151,13 +149,6 @@ function HighlightBands(h,k,i,l) {
   }
 }
 
-function Factorial(num){
-    let val=1;
-    for (let i = 2; i <= num; i++)
-        val = val * i;
-    return val;
-}
-
 function Multiplicity(h,k,i) {
   // caluclates the multiplicity - the number of bands that relate to a specified plane
   equivplanes = permutator([h,k,i]);
@@ -183,7 +174,6 @@ function eliminateDuplicates(arr) {
       len = arr.length,
       out = [],
       obj = {};
-
   for (i = 0; i < len; i++) {
     obj[arr[i]] = 0;
   }
@@ -195,10 +185,8 @@ function eliminateDuplicates(arr) {
 
 function permutator(inputArr) {
   var results = [];
-
   function permute(arr, memo) {
     var cur, memo = memo || [];
-
     for (var i = 0; i < arr.length; i++) {
       cur = arr.splice(i, 1);
       if (arr.length === 0) {
@@ -207,7 +195,6 @@ function permutator(inputArr) {
       permute(arr.slice(), memo.concat(cur));
       arr.splice(i, 0, cur[0]);
     }
-
     return results;
   }
 
