@@ -103,7 +103,7 @@ function bandWidth(h,k,l) {
 
 function N2Aangle(h,k,i,l) {
   // calculates the angle between the normal of the plane and the direction of the a-axis [2,-1,-1,0]
-  W = ((3*a**2)/(2*c**2))*l
+  W = l*((3*a**2)/(2*c**2))//*0 //when this term is multiplied by zero, the program works.
   const num = (a**2)*(3*(2*h-k)+(3/2)*(2*k-h)) // numerator of the equation
   const den = 3*a*Math.sqrt((3*(a**2)*((h**2)+h*k+(k**2)))+((c**2)*(W**2))) // denomenator of equation
   const angle = Math.acos(num/den); //Angle between normal and direction of A-axis [2,-1,-1,0]
